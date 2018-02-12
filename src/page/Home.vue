@@ -3,7 +3,7 @@
     <sub-nav mold="quickNav"></sub-nav>
     <list mold="thumbnail" :items="events"></list>
     <infinite-loading :on-infinite="onInfinite" ref="infiniteLoading">
-      <loading slot="spinner"></loading>
+      <loading slot="spinner" v-show="showLoading"></loading>
     </infinite-loading>
   </div>
 </template>
@@ -26,23 +26,20 @@ export default {
   },
   data () {
     return {
-      time: 3
     }
   },
   computed: {
     ...mapState({
-      events: (state) => state.activities.events
+      events: (state) => state.activities.events,
+      showLoading: (state) => state.activities.showLoading
     })
   },
   methods: {
     onInfinite ($state) {
-      if (this.time > 0) {
-        setTimeout(() => {
-          this.$store.dispatch(LOAD_MORE)
-          $state.loaded()
-          this.time--
-        }, 1000)
-      }
+      setTimeout(() => {
+        this.$store.dispatch(LOAD_MORE)
+        $state.loaded()
+      }, 1000)
     }
   }
 }

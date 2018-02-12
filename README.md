@@ -28,14 +28,55 @@ npm test
 ```
 
 # 本次培训与示例douban项目不一致的地方体现在如下四个方面：  
+
+
+#### 在获取豆瓣api的方式上采用了proxyTable来解决跨域问题而不使用jsonp  
+
+#### 目录结构划分不一样。示例douban中组件划分不够清晰，layout与view混杂在一起，当多个页头页脚的时候维护与扩展困难；api请求与状态管理vuex混用，不利于维护  
+
+#### vuex的最佳实践不一样  
 ```
-# 在获取豆瓣api的方式上采用了proxyTable来解决跨域问题而不使用jsonp  
+export const CURRENT_USER = 'CURRENT_USER'
 
-# 目录结构划分不一样。示例douban中组件划分不够清晰，layout与view混杂在一起，当多个页头页脚的时候维护与扩展困难；api请求与状态管理vuex混用，不利于维护  
+export const REGISTER = 'REGISTER'
 
-# vuex的最佳实践不一样， 示例douban未使用常量名来管理action  
+export const LOAD_MORE = 'LOAD_MORE'
 
-# 分层管理不一致  
+export const GET_SINGLE_EVENT = 'GET_SINGLE_EVENT'
+
+export const GET_MOVIE = 'GET_MOVIE'
+
+export const GET_SINGLE_SUBJECT = 'GET_SINGLE_SUBJECT'
+
+export const GET_BOOK = 'GET_BOOK'
+
+export const GET_GROUP = 'GET_GROUP'
+
+export const QUERY = 'QUERY'
+
+export const createAsyncAction = (type, fn) => async ({commit, state}, payload) => {
+  commit({
+    type: `${type}_PENDING`,
+    params: payload
+  })
+  try {
+    let res = await fn({commit, state}, payload)
+    console.log('type', type)
+    console.log('res', res)
+    commit({
+      type: `${type}_FULFILLED`,
+      data: res,
+      params: payload
+    })
+    return res
+  } catch (e) {
+    commit({
+      type: `${type}_FAILED`,
+      params: payload
+    })
+    throw e
+  }
+}
 ```
+#### 分层管理不一致  
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

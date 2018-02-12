@@ -33,6 +33,7 @@ npm test
 #### 在获取豆瓣api的方式上采用了proxyTable来解决跨域问题而不使用jsonp  
 
 #### 目录结构划分不一样。示例douban中组件划分不够清晰，layout与view混杂在一起，当多个页头页脚的时候维护与扩展困难
+   · 以基础组建(element ui), components, layouts, pages的⽅式去划分
    · 采用设置layout分层和嵌套路由的方式，实现不同页面页头页尾的控制
 ```
 import Default from '@/layouts/Default'
